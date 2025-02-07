@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:nonovattractionpark_app/widgets/container_top.dart';
 
 
 class MyHomePage extends StatefulWidget {
@@ -20,21 +21,16 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Text(
-            'You have pushed the button this many times:',
-          ),
-          Text(
-            '$page',
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-        ],
+      body:
+      SafeArea(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ContainerTop(text: 'nuageux'),
+            ContainerTop(text: '100 000€'),
+            ContainerTop(text: '5'),
+          ],
+        ),
       ),
       bottomNavigationBar: NavigationBar(
           onDestinationSelected: (index){
