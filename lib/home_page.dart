@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 
-import 'package:nonovattractionpark_app/utils/navbar.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -14,6 +14,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final int _counter = 0;
+
+  int page = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +31,27 @@ class _MyHomePageState extends State<MyHomePage> {
             'You have pushed the button this many times:',
           ),
           Text(
-            '$_counter',
+            '$page',
             style: Theme.of(context).textTheme.headlineMedium,
           ),
         ],
       ),
-      bottomNavigationBar: const Navbar(),
+      bottomNavigationBar: NavigationBar(
+          onDestinationSelected: (index){
+            setState(() {
+              page = index;
+            });
+
+          },
+          selectedIndex: page,
+          elevation: 1,
+          height: 80,
+          destinations: const [
+            NavigationDestination(icon: Icon(Iconsax.home), label: 'Parc'),
+            NavigationDestination(icon: Icon(Iconsax.shop), label: 'Boutique'),
+            NavigationDestination(icon: Icon(Iconsax.user), label: 'Employés'),
+            NavigationDestination(icon: Icon(Iconsax.more), label: 'Paramètres'),
+          ]),
     );
   }
 }
