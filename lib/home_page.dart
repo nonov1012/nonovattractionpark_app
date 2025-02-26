@@ -21,23 +21,14 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:
-      SafeArea(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ContainerTop(text: 'nuageux'),
-            ContainerTop(text: '100 000€'),
-            ContainerTop(text: '10 000'),
-          ],
-        ),
-      ),
+
+      body: buildBody(),
+
       bottomNavigationBar: NavigationBar(
           onDestinationSelected: (index){
             setState(() {
               page = index;
             });
-
           },
           selectedIndex: page,
           elevation: 1,
@@ -49,5 +40,58 @@ class _MyHomePageState extends State<MyHomePage> {
             NavigationDestination(icon: Icon(Iconsax.more), label: 'Paramètres'),
           ]),
     );
+  }
+
+  Widget buildBody(){
+    if(page == 0){
+      // ======PARC=========
+      return SafeArea(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ContainerTop(text: 'nuageux'),
+            ContainerTop(text: '100 000€'),
+            ContainerTop(text: '10 000'),
+          ],
+        ),
+      );
+
+      // ======BOUTIQUE=========
+    }else if(page == 1){
+      return SafeArea(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ContainerTop(text: 'nuageux'),
+            ContainerTop(text: '100 000€'),
+            ContainerTop(text: '10 000'),
+          ],
+        ),
+      );
+      // ======EMPLOYES=========
+    }else if (page == 2){
+      return SafeArea(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ContainerTop(text: 'nuageux'),
+            ContainerTop(text: '100 000€'),
+            ContainerTop(text: '10 000'),
+          ],
+        ),
+      );
+      // ======PARAMETRES=========
+    }else{
+      return SafeArea(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ContainerTop(text: 'nuageux'),
+            ContainerTop(text: '100 000€'),
+            ContainerTop(text: '10 000'),
+          ],
+        ),
+      );
+    }
   }
 }
