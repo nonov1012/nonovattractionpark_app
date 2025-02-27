@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:nonovattractionpark_app/app_const.dart';
 import 'package:nonovattractionpark_app/widgets/container_top.dart';
 import 'package:nonovattractionpark_app/widgets/settings/option.dart';
 import 'widgets/shop/carousel.dart';
@@ -17,7 +18,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final int _counter = 0;
+  // final int _counter = 0;
 
   int page = 0;
 
@@ -52,9 +53,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ContainerTop(text: 'nuageux'),
-            ContainerTop(text: '100 000€'),
-            ContainerTop(text: '10 000'),
+            ContainerTop(text: AppConst.weather),
+            ContainerTop(text: AppConst.formattedMoney),
+            ContainerTop(text: AppConst.population.toString()),
           ],
         ),
       );
@@ -68,9 +69,9 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ContainerTop(text: 'nuageux'),
-                ContainerTop(text: '100 000€'),
-                ContainerTop(text: '10 000'),
+                ContainerTop(text: AppConst.weather),
+                ContainerTop(text: AppConst.formattedMoney),
+                ContainerTop(text: AppConst.population.toString()),
               ],
             ),
           SizedBox(
@@ -92,9 +93,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ContainerTop(text: 'nuageux'),
-            ContainerTop(text: '100 000€'),
-            ContainerTop(text: '10 000'),
+            ContainerTop(text: AppConst.weather),
+            ContainerTop(text: AppConst.formattedMoney),
+            ContainerTop(text: AppConst.population.toString()),
           ],
         ),
       );
@@ -106,9 +107,9 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ContainerTop(text: 'nuageux'),
-                ContainerTop(text: '100 000€'),
-                ContainerTop(text: '10 000'),
+                ContainerTop(text: AppConst.weather),
+                ContainerTop(text: AppConst.formattedMoney),
+                ContainerTop(text: AppConst.population.toString()),
               ],
             ),
             const Expanded(child: SettingsPage()),
