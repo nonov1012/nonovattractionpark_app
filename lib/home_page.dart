@@ -61,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }else if(page == 1){
       return SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start, // Aligne les éléments en haut
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -88,7 +88,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       right: 10,
                       child: ElevatedButton(
                         onPressed: () {
-                          // Action pour le bouton
                         },
                         child: Text('50€'),
                       ),
