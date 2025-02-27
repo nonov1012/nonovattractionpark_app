@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:nonovattractionpark_app/widgets/container_top.dart';
-
-
+import 'package:nonovattractionpark_app/widgets/settings/option.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -38,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
             NavigationDestination(icon: Icon(Iconsax.home), label: 'Parc'),
             NavigationDestination(icon: Icon(Iconsax.shop), label: 'Boutique'),
             NavigationDestination(icon: Icon(Iconsax.user), label: 'Employés'),
-            NavigationDestination(icon: Icon(Iconsax.more), label: 'Paramètres'),
+            NavigationDestination(icon: Icon(Iconsax.setting_2), label: 'Paramètres'),
           ]),
     );
   }
@@ -152,12 +151,17 @@ class _MyHomePageState extends State<MyHomePage> {
       // ======PARAMETRES=========
     }else{
       return SafeArea(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Column(
           children: [
-            ContainerTop(text: 'nuageux'),
-            ContainerTop(text: '100 000€'),
-            ContainerTop(text: '10 000'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ContainerTop(text: 'nuageux'),
+                ContainerTop(text: '100 000€'),
+                ContainerTop(text: '10 000'),
+              ],
+            ),
+            const Expanded(child: SettingsPage()),
           ],
         ),
       );
