@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:nonovattractionpark_app/app_const.dart';
+import 'package:nonovattractionpark_app/services/api.dart';
 import 'package:nonovattractionpark_app/widgets/container_top.dart';
 import 'package:nonovattractionpark_app/widgets/settings/option.dart';
 import 'widgets/shop/carousel.dart';
@@ -21,6 +22,23 @@ class _MyHomePageState extends State<MyHomePage> {
   // final int _counter = 0;
 
   int page = 0;
+
+  final WeatherService _weatherService = WeatherService(); // Instance du service météo
+
+  @override
+  void initState() {
+    super.initState();
+    // Charger la météo au démarrage (utilisez une ville de votre choix)
+    _fetchWeather();
+  }
+
+  // Méthode pour récupérer la météo
+  Future<void> _fetchWeather() async {
+    // Vous pouvez choisir une ville par défaut, ou utiliser la géolocalisation
+    await _weatherService.getWeatherByCity('Paris');
+    // Pour forcer la mise à jour de l'UI après avoir récupéré la météo
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
