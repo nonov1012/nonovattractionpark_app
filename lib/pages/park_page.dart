@@ -33,6 +33,7 @@ class ParkPage extends StatelessWidget {
 
   Widget _buildParkStats(GameProvider gameProvider) {
     final formatter = NumberFormat("#,##0", "fr_FR");
+    final weatherData = gameProvider.weatherData;
 
     return Container(
       margin: const EdgeInsets.all(16),
@@ -87,6 +88,32 @@ class ParkPage extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
+            ),
+          ],
+          // Afficher l'impact météo
+          if (weatherData != null && weatherData.modifier != 1.0) ...[
+            const SizedBox(height: 10),
+            const Divider(color: Colors.white30, height: 1),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  weatherData.weatherEmoji,
+                  style: const TextStyle(fontSize: 20),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Météo: ${weatherData.impactDescription}',
+                  style: TextStyle(
+                    color: weatherData.modifier > 1.0
+                        ? Colors.greenAccent
+                        : Colors.orange.shade200,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
           ],
         ],

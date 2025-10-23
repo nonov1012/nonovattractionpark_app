@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/attraction.dart';
 import '../models/employee.dart';
+import '../services/api.dart';
 
 class GameProvider extends ChangeNotifier {
   int _money = 1000;
@@ -11,7 +12,11 @@ class GameProvider extends ChangeNotifier {
   List<Attraction> _attractions = [];
   List<Employee> _employees = [];
   Timer? _incomeTimer;
+  Timer? _weatherTimer;
   DateTime _lastSaveTime = DateTime.now();
+  WeatherData? _weatherData;
+  final WeatherService _weatherService = WeatherService();
+  static const String _weatherCity = 'Calais'; // Ville de Calais
 
   int get money => _money;
   int get population => _population;
@@ -21,6 +26,7 @@ class GameProvider extends ChangeNotifier {
       _attractions.where((a) => a.quantity > 0).toList();
   List<Employee> get hiredEmployees =>
       _employees.where((e) => e.isHired).toList();
+  WeatherData? get weatherData => _weatherData;
 
   // Revenu total par seconde
   int get incomePerSecond {
@@ -32,8 +38,16 @@ class GameProvider extends ChangeNotifier {
       multiplier *= employee.efficiencyBonus;
     }
 
+    // Appliquer le modificateur météo
+    if (_weatherData != null) {
+      multiplier *= _weatherData!.modifier;
+    }
+
     return (baseIncome * multiplier).round();
   }
+
+  // Modificateur météo (pour affichage)
+  double get weatherModifier => _weatherData?.modifier ?? 1.0;
 
   // Coût total des salaires par seconde
   int get salaryPerSecond =>
@@ -50,7 +64,30 @@ class GameProvider extends ChangeNotifier {
     await _loadGame();
     _initializeAttractions();
     _initializeEmployees();
+    await _fetchWeather(); // Récupérer la météo au démarrage
     _startIncomeGeneration();
+    _startWeatherUpdates(); // Démarrer les mises à jour météo
+  }
+
+  // Récupérer la météo
+  Future<void> _fetchWeather() async {
+    try {
+      final weather = await _weatherService.getWeatherByCity(_weatherCity);
+      if (weather != null) {
+        _weatherData = weather;
+        notifyListeners();
+      }
+    } catch (e) {
+      print('Erreur lors de la récupération de la météo: $e');
+    }
+  }
+
+  // Démarrer les mises à jour météo (toutes les 30 minutes)
+  void _startWeatherUpdates() {
+    _weatherTimer?.cancel();
+    _weatherTimer = Timer.periodic(const Duration(minutes: 30), (timer) {
+      _fetchWeather();
+    });
   }
 
   void _initializeAttractions() {
@@ -191,7 +228,12 @@ class GameProvider extends ChangeNotifier {
 
   void _updatePopulation() {
     // La population augmente avec le nombre d'attractions
-    int newPopulation = _attractions.fold(0, (sum, a) => sum + (a.quantity * 10));
+    int basePopulation = _attractions.fold(0, (sum, a) => sum + (a.quantity * 10));
+
+    // Appliquer le modificateur météo à la population
+    double weatherMod = _weatherData?.modifier ?? 1.0;
+    int newPopulation = (basePopulation * weatherMod).round();
+
     if (newPopulation != _population) {
       _population = newPopulation;
     }
@@ -342,9 +384,15 @@ class GameProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Forcer la mise à jour de la météo (pour le debug ou refresh manuel)
+  Future<void> refreshWeather() async {
+    await _fetchWeather();
+  }
+
   @override
   void dispose() {
     _incomeTimer?.cancel();
+    _weatherTimer?.cancel();
     _saveGame();
     super.dispose();
   }
