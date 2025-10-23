@@ -3,7 +3,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:nonovattractionpark_app/providers/game_provider.dart';
-import 'package:nonovattractionpark_app/pages/park_page.dart';
+import 'package:nonovattractionpark_app/pages/park_3d_page.dart';
 import 'package:nonovattractionpark_app/pages/shop_page.dart';
 import 'package:nonovattractionpark_app/pages/employees_page.dart';
 import 'package:nonovattractionpark_app/widgets/settings/option.dart';
@@ -270,7 +270,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget buildBody() {
     switch (page) {
       case 0:
-        return const ParkPage();
+        return const Park3DPage();
       case 1:
         return const ShopPage();
       case 2:
@@ -278,7 +278,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case 3:
         return const SettingsPage();
       default:
-        return const ParkPage();
+        return const Park3DPage();
     }
   }
 }
