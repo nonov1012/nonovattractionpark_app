@@ -1,11 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 import 'package:nonovattractionpark_app/app_const.dart';
 import 'package:nonovattractionpark_app/services/api.dart';
-import 'package:nonovattractionpark_app/widgets/container_top.dart';
+import 'package:nonovattractionpark_app/providers/game_provider.dart';
+import 'package:nonovattractionpark_app/pages/park_page.dart';
+import 'package:nonovattractionpark_app/pages/shop_page.dart';
+import 'package:nonovattractionpark_app/pages/employees_page.dart';
 import 'package:nonovattractionpark_app/widgets/settings/option.dart';
-import 'widgets/shop/carousel.dart';
 
 
 
@@ -42,98 +45,110 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-
-      body: buildBody(),
-
-      bottomNavigationBar: NavigationBar(
-          onDestinationSelected: (index){
-            setState(() {
-              page = index;
-            });
-          },
-          selectedIndex: page,
-          elevation: 1,
-          height: 80,
-          destinations: const [
-            NavigationDestination(icon: Icon(Iconsax.home), label: 'Parc'),
-            NavigationDestination(icon: Icon(Iconsax.shop), label: 'Boutique'),
-            NavigationDestination(icon: Icon(Iconsax.user), label: 'Employés'),
-            NavigationDestination(icon: Icon(Iconsax.setting_2), label: 'Paramètres'),
-          ]),
+    return Consumer<GameProvider>(
+      builder: (context, gameProvider, child) {
+        return Scaffold(
+          body: SafeArea(
+            child: Column(
+              children: [
+                _buildHeader(gameProvider),
+                Expanded(child: buildBody()),
+              ],
+            ),
+          ),
+          bottomNavigationBar: NavigationBar(
+            onDestinationSelected: (index) {
+              setState(() {
+                page = index;
+              });
+            },
+            selectedIndex: page,
+            elevation: 1,
+            height: 80,
+            destinations: const [
+              NavigationDestination(icon: Icon(Iconsax.home), label: 'Parc'),
+              NavigationDestination(icon: Icon(Iconsax.shop), label: 'Boutique'),
+              NavigationDestination(icon: Icon(Iconsax.user), label: 'Employés'),
+              NavigationDestination(icon: Icon(Iconsax.setting_2), label: 'Paramètres'),
+            ],
+          ),
+        );
+      },
     );
   }
 
-  Widget buildBody(){
-    if(page == 0){
-      // ======PARC=========
-      return SafeArea(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ContainerTop(text: AppConst.weather),
-            ContainerTop(text: AppConst.formattedMoney),
-            ContainerTop(text: AppConst.population.toString()),
-          ],
-        ),
-      );
+  Widget _buildHeader(GameProvider gameProvider) {
+    final formatter = NumberFormat("#,##0", "fr_FR");
 
-      // ======BOUTIQUE=========
-    }else if(page == 1){
-      return SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ContainerTop(text: AppConst.weather),
-                ContainerTop(text: AppConst.formattedMoney),
-                ContainerTop(text: AppConst.population.toString()),
-              ],
-            ),
-          SizedBox(
-            height: 240,
-            child: Carousel(
-              items: [
-                {'URL_Image': 'https://cdn.discordapp.com/attachments/1160568640542875700/1344662128602120252/IMG_20250227_142703.jpg?ex=67c1b9b2&is=67c06832&hm=6b920e58bb35009e4433279b6173c732926fae183109f8072a3da929258761b4&', 'Prix': '150'},
-                {'URL_Image': 'https://www.cetaces.org/wp-content/uploads/2009/07/Dauphin-bleu-et-blanc-Sc108060.jpg', 'Prix': '150'},
-                {'URL_Image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSk8HP_qwU9TSUGL07XMbYluFa27GyV2BmRjg&s', 'Prix': '500'},
-              ],
-            ),
-          )
-          ])
-      );
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            blurRadius: 5,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildStatItem(
+            icon: Icons.wb_sunny,
+            label: AppConst.weather,
+            color: Colors.orange,
+          ),
+          _buildStatItem(
+            icon: Icons.account_balance_wallet,
+            label: '${formatter.format(gameProvider.money)} €',
+            color: Colors.green,
+          ),
+          _buildStatItem(
+            icon: Icons.people,
+            label: '${formatter.format(gameProvider.population)}',
+            color: Colors.blue,
+          ),
+        ],
+      ),
+    );
+  }
 
-      // ======EMPLOYES=========
-    }else if (page == 2){
-      return SafeArea(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ContainerTop(text: AppConst.weather),
-            ContainerTop(text: AppConst.formattedMoney),
-            ContainerTop(text: AppConst.population.toString()),
-          ],
+  Widget _buildStatItem({
+    required IconData icon,
+    required String label,
+    required Color color,
+  }) {
+    return Row(
+      children: [
+        Icon(icon, size: 20, color: color),
+        const SizedBox(width: 6),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: color,
+          ),
         ),
-      );
-      // ======PARAMETRES=========
-    }else{
-      return SafeArea(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ContainerTop(text: AppConst.weather),
-                ContainerTop(text: AppConst.formattedMoney),
-                ContainerTop(text: AppConst.population.toString()),
-              ],
-            ),
-            const Expanded(child: SettingsPage()),
-          ],
-        ),
-      );
+      ],
+    );
+  }
+
+  Widget buildBody() {
+    switch (page) {
+      case 0:
+        return const ParkPage();
+      case 1:
+        return const ShopPage();
+      case 2:
+        return const EmployeesPage();
+      case 3:
+        return const SettingsPage();
+      default:
+        return const ParkPage();
     }
   }
 }
